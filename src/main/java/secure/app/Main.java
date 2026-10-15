@@ -1,63 +1,68 @@
 package secure.app;
 import java.util.Scanner;
+import java.util.Dictionary;
+import java.util.Hashtable;
+import java.util.concurrent.TimeUnit;
 
 
 
 public class Main {
-    public static void main(String[] args) {
+    Dictionary<String, String> s = new Hashtable<>();
 
-        Scanner reader = new Scanner(System.in);
+    public   void display() {
+        Scanner r = new Scanner(System.in); // r is the reader
 
         int choice = 0;
-        String usr = "";
-        String pass = "";
 
         while (choice != 3) {
-
-            System.out.println("Would you like to:\n1. Set up an account\n2. login\n3. Quit");
-            choice = reader.nextInt();
+            System.out.println("1. Setup\n2. Login\n3. Quit.");
+            choice = r.nextInt();
 
             if (choice == 1) {
-                if (usr == "") {
-                    System.out.println("Enter username: "); // these two functions go off at the same time which screws the password collection
-                    usr = reader.nextLine(); 
-                    System.out.println("Enter password: ");
-                    pass = reader.nextLine();
-                }
-                
-                System.out.println("Account has already been made");
-
+                createAccount();
+                choice = 0;
             }
-
             else if (choice == 2) {
-                Boolean login = false;
-
-                while (!login) {
-                    System.out.println("enter username");
-                    String usrAttempt = reader.nextLine();
-                    System.out.println("enter password: ");
-                    String passAttempt = reader.nextLine();   
-
-                    if (usrAttempt == usr && passAttempt == pass) {
-                        System.out.println("login successful");
-                        login = true;
-                    }
-
-                    System.out.println("incorrect credientials, try again");
-                }
-                
+                login();
+                choice = 0;
             }
-
             else if (choice == 3) {
-                System.out.println("Have a good day!");
-                return;
+                System.out.println("Thank you!");
             }
-
-            System.out.println("please type a valid choice");
-
         }
 
-        reader.close();
+        r.close(); // remember to close it
+
     }
+
+    public void createAccount() {
+        
+        Scanner u = new Scanner(System.in);
+        Scanner p = new Scanner(System.in);
+
+        System.out.println("username? ");
+        String usr = u.nextLine();
+        
+        System.out.println("password?");
+        String pass = p.nextLine();
+        s.put(usr, pass);
+        System.out.println("added.");
+
+        u.close(); p.close();
+
+
+        // return true;
+    }
+
+    public static void login() {
+
+        // return true;
+    }
+
+
+    public static void main(String[] args) {
+
+        display();
+    }   
 
 }
