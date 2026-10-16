@@ -1,68 +1,87 @@
 package secure.app;
+
+import java.io.File;
 import java.util.Scanner;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.concurrent.TimeUnit;
-
-
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Main {
-    Dictionary<String, String> s = new Hashtable<>();
 
-    public   void display() {
-        Scanner r = new Scanner(System.in); // r is the reader
-
-        int choice = 0;
-
-        while (choice != 3) {
-            System.out.println("1. Setup\n2. Login\n3. Quit.");
-            choice = r.nextInt();
-
-            if (choice == 1) {
-                createAccount();
-                choice = 0;
+    public static void createFile() {
+        try {
+            File f = new File("text.txt");
+            if (f.createNewFile()) {
+              System.out.println("new file created. " + f.getName());  
             }
-            else if (choice == 2) {
-                login();
-                choice = 0;
+            else {
+            System.out.println("file already exists");
             }
-            else if (choice == 3) {
-                System.out.println("Thank you!");
-            }
+        } catch (IOException e) {
+            System.out.println("An error occured");
+            e.printStackTrace();
         }
-
-        r.close(); // remember to close it
-
     }
 
-    public void createAccount() {
-        
-        Scanner u = new Scanner(System.in);
-        Scanner p = new Scanner(System.in);
-
-        System.out.println("username? ");
-        String usr = u.nextLine();
-        
-        System.out.println("password?");
-        String pass = p.nextLine();
-        s.put(usr, pass);
-        System.out.println("added.");
-
-        u.close(); p.close();
-
-
-        // return true;
+    public static void addUsr(String usr) {
+        try {
+            FileWriter w = new FileWriter("text.txt");
+            w.write(usr);
+            w.close();
+            System.out.println(usr + " added");
+        } catch (IOException e) {
+            System.out.println("error creating file");
+            e.printStackTrace();
+        }
     }
 
-    public static void login() {
 
-        // return true;
+
+    public static String display() {
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("username?");
+        String usrname = s.nextLine();
+
+        
+        s.close();
+        return usrname;
+        
+    }
+
+    public static void deleteFile() {
+        File f = new File("text.txt");
+        if (f.delete()) {
+            System.out.println("file deleted");
+        } else {
+            System.out.println("error deleting file");
+        }
     }
 
 
     public static void main(String[] args) {
+        createFile();
+        addUsr(display());
 
-        display();
-    }   
+        Scanner s = new Scanner(System.in);
+        System.out.println("delete file? 0 / 1");
 
+        if (s.hasNextInt()) {
+           int choice = s.nextInt(); 
+        }
+        
+        
+        while (choice != 0)
+            if (choice == 1) {
+                deleteFile();
+            }
+            else if (choice == 0) {
+                System.out.println("Program complete");
+                s.close();
+                return;
+            }
+            else {
+                System.out.println("invalid choice");
+            }
+        s.close();
+    }
 }
