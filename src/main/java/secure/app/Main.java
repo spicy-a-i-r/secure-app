@@ -1,33 +1,20 @@
 package secure.app;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
+
+
 
 public class Main {
 
-    public void encryptFile(String file) {
 
-        Boolean isAdmin = User.checkPerms();
-        // first find the path
-        // check is file is already encrypted
-        // if not then encypt it
-    }
-
-    public static void readFile(String file) {
-        //check if file is encrypted
-            // check the priviledges
-        //decrypt the file
-        //return the file
-    }
-
-    public static void decryptFile(String file) {
-        // check if the file is encrypted
-        // if so then check privileges
-        // decrypt file
-    }
 
     public static User createUser(Scanner s) {
         System.out.println("username:");
