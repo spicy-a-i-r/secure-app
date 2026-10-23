@@ -1,6 +1,5 @@
 package secure.app;
 
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -11,8 +10,7 @@ import javax.crypto.Cipher;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.security.SecureRandom;
-import java.io.File;
-import java.io.IOException;
+
 
 
 

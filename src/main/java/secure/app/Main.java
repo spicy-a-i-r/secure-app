@@ -1,11 +1,10 @@
 package secure.app;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 
 
@@ -28,15 +27,16 @@ public class Main {
         return new User(usr, pass, admin);
     }
 
-    public static void encrypt(String pass) {
+    public static void encrypt(char[] pass) throws Exception{
         // simple usr interface
 
         Scanner s = new Scanner(System.in);
 
         System.out.println("enter the path of the file you want encrypted");
-        String input = s.nextLine();
+        Path input = Paths.get(s.nextLine());
         
-        String output;
+        
+        String output = "placeholder";
 
         /////////////////////////////////////////////////////////////////
         
@@ -60,29 +60,51 @@ public class Main {
             }
             
         }
+        Path out = Paths.get(output);
 
         ///////////////////////////////////////////////////////////////////////
 
         // encrypt the file and delete the old one
 
-        FileCrypto encrypt(input,output, pass);
 
-        input.delete(); 
+        File f = new File(input.toString());
+        f.delete();
 
+        FileCrypto.encrypt(input,out, pass);
         s.close();
     }
 
-    public static void decrypt() {
+    public static void decrypt(char[] pass) throws Exception{
         // usr interface
+        Scanner s = new Scanner(System.in);
 
-        // find the secure folder
+        System.out.println("What is the name of the file? ");
+        Path input = Paths.get(s.nextLine());
 
-        // call the decrypt function
-        
-        // delete the encrypted file and create a new file
+        try {
+            File f = new File(input.toFile().getName());
+            if (f.createNewFile()) {
+                Path output = Paths.get(f.getAbsolutePath());
+                FileCrypto.decrypt(input, output, pass);
+                System.out.println("File decrypted at " + output);
+                
+                File i = new File(input.toString());
+                i.delete();
+            }
+            else {
+                System.out.println("Error decrypting file (already decrypted)");
+                s.close();
+                return;
+            }
+        } catch (IOException e){
+            System.out.println("an error occured");
+            e.printStackTrace();
+        }
+        s.close();
+
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
 
         Scanner s = new Scanner(System.in);
@@ -94,10 +116,34 @@ public class Main {
             return;
         } 
 
-        createUser(s);
+        User usr = createUser(s);
+
+        // ask to enter password
+
+        System.out.println("please enter your password");
+        String pass_attempt = s.nextLine();
+
+        if (usr.checkPass(pass_attempt)) {
+            char[] pass = pass_attempt.toCharArray();
+            System.out.println("logged in.\n would you like to 1. encrypt\n2. decrypt\n3. leave");
+            int c = s.nextInt();
+            
+
+            while (c != 3) { // convert to short hand
+                if (c == 1) {
+                    encrypt(pass);
+                } else if (c == 2) {
+                    decrypt(pass);
+                } else if (c==3) {
+                    System.out.println("GoodBye!");
+                    s.close();
+                    return;
+                }
+                System.out.println("please enter correct option");
+            }
 
 
-
+        }
 
     }
 }
