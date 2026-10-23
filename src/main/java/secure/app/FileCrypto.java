@@ -11,6 +11,8 @@ import javax.crypto.Cipher;
 import java.nio.file.Path;
 import java.nio.file.Files;
 import java.security.SecureRandom;
+import java.io.File;
+import java.io.IOException;
 
 
 
@@ -28,6 +30,7 @@ public class FileCrypto {
         return new SecretKeySpec(keyBytes, "AES"); 
     }
 
+
     public static void encrypt(Path input, Path output, char[] pass) throws Exception {
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_LEN]; // CREATING A SALT USING THE SALT LENGTH
@@ -38,11 +41,12 @@ public class FileCrypto {
         SecretKey key = deriveKey(pass, salt);
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-        cipher.init(Cipher.ENCRPYT_MODE, key, new GCMParameterSpec(128, iv));
+        cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(128, iv));
         byte[] ciphertext = cipher.doFinal(Files.readAllBytes(input));
         
         ByteBuffer out = ByteBuffer.allocate(SALT_LEN + IV_LEN + ciphertext.length);
         out.put(salt).put(iv).put(ciphertext);
+
         Files.write(output, out.array());
     }  
 
@@ -51,15 +55,20 @@ public class FileCrypto {
 
         byte[] salt = new byte[SALT_LEN]; // salt length and iv should still be the same
         byte[] iv = new byte[IV_LEN];
-        in.get(salt);
-        in.get(iv);
-        byte[] ciphertext = new byte[in.remaining()];
-        in.get(ciphertext);
+        in.get(salt); 
+        in.get(iv); 
+        byte[] ciphertext = new byte[in.remaining()]; 
+        in.get(ciphertext); // takes the cipher text
 
-        SecretKey key = deriveKey(pass, salt);
+        SecretKey key = deriveKey(pass, salt); // gets the key
 
-        Cipher chiper = 
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding"); // gets the correct cipher standard?
+        cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(128, iv)); // initalizes the cipher
+        byte[] normalText = cipher.doFinal(ciphertext); 
 
+        ByteBuffer out = ByteBuffer.allocate(normalText.length);
+        out.put(normalText);
+        Files.write(output, out.array());
 
     }
     

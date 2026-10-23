@@ -5,10 +5,8 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Path;
 
-import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
-import javax.crypto.SecretKey;
 
 
 
@@ -28,6 +26,60 @@ public class Main {
 
         System.out.println("user added.");
         return new User(usr, pass, admin);
+    }
+
+    public static void encrypt(String pass) {
+        // simple usr interface
+
+        Scanner s = new Scanner(System.in);
+
+        System.out.println("enter the path of the file you want encrypted");
+        String input = s.nextLine();
+        
+        String output;
+
+        /////////////////////////////////////////////////////////////////
+        
+        // find the secure folder
+        Path currentDir = Path.of("").toAbsolutePath();
+        File[] files = currentDir.toFile().listFiles();
+
+        if (files == null) {
+            System.out.println("no files here");
+            s.close();
+            return;
+        }
+
+        for (File file : files) {
+            if (file.isDirectory() && file.getName() == "storage") {
+                output = file.getAbsolutePath();
+            } else {
+                System.out.println("no storage found");
+                s.close();
+                return;
+            }
+            
+        }
+
+        ///////////////////////////////////////////////////////////////////////
+
+        // encrypt the file and delete the old one
+
+        FileCrypto encrypt(input,output, pass);
+
+        input.delete(); 
+
+        s.close();
+    }
+
+    public static void decrypt() {
+        // usr interface
+
+        // find the secure folder
+
+        // call the decrypt function
+        
+        // delete the encrypted file and create a new file
     }
 
     public static void main(String[] args) {
