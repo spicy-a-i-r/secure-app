@@ -33,7 +33,10 @@ public class Main {
         Scanner s = new Scanner(System.in);
 
         System.out.println("enter the path of the file you want encrypted");
-        Path input = Paths.get(s.nextLine());
+    
+        String in = s.hasNextLine() ? s.nextLine() : null;
+        if (in == null) {System.out.println("still a problem here");}
+        Path input = Paths.get(in);
         
         
         String output = "placeholder";
@@ -111,7 +114,7 @@ public class Main {
         System.out.println("Create user? y/n");
         String choice = s.nextLine();
 
-        if (choice != "y") {
+        if (choice == "n") {
             System.out.println("Good bye!");
             return;
         } 
