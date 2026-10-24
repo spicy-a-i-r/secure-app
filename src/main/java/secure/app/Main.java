@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 
 public class Main {
 
-
+    public static Scanner s = new Scanner(System.in);
 
     public static User createUser(Scanner s) {
         System.out.println("username:");
@@ -30,13 +30,14 @@ public class Main {
     public static void encrypt(char[] pass) throws Exception{
         // simple usr interface
 
-        Scanner s = new Scanner(System.in);
 
         System.out.println("enter the path of the file you want encrypted");
+        
+        Path input = Paths.get(s.nextLine());
     
-        String in = s.hasNextLine() ? s.nextLine() : null;
-        if (in == null) {System.out.println("still a problem here");}
-        Path input = Paths.get(in);
+        
+
+        
         
         
         String output = "placeholder";
@@ -44,12 +45,11 @@ public class Main {
         /////////////////////////////////////////////////////////////////
         
         // find the secure folder
-        Path currentDir = Path.of("").toAbsolutePath();
+        Path currentDir = Path.of("").toAbsolutePath(); // i think this is the problem?
         File[] files = currentDir.toFile().listFiles();
 
-        if (files == null) {
+        if (files == null) { // althought i am getting files
             System.out.println("no files here");
-            s.close();
             return;
         }
 
@@ -57,8 +57,7 @@ public class Main {
             if (file.isDirectory() && file.getName() == "storage") {
                 output = file.getAbsolutePath();
             } else {
-                System.out.println("no storage found");
-                s.close();
+                System.out.println("no storage found"); // why is storage not wroking
                 return;
             }
             
@@ -74,12 +73,10 @@ public class Main {
         f.delete();
 
         FileCrypto.encrypt(input,out, pass);
-        s.close();
     }
 
     public static void decrypt(char[] pass) throws Exception{
         // usr interface
-        Scanner s = new Scanner(System.in);
 
         System.out.println("What is the name of the file? ");
         Path input = Paths.get(s.nextLine());
@@ -96,21 +93,19 @@ public class Main {
             }
             else {
                 System.out.println("Error decrypting file (already decrypted)");
-                s.close();
                 return;
             }
         } catch (IOException e){
             System.out.println("an error occured");
             e.printStackTrace();
         }
-        s.close();
+
 
     }
 
     public static void main(String[] args) throws Exception{
 
 
-        Scanner s = new Scanner(System.in);
         System.out.println("Create user? y/n");
         String choice = s.nextLine();
 
@@ -142,7 +137,7 @@ public class Main {
                     s.close();
                     return;
                 }
-                System.out.println("please enter correct option");
+                System.out.println("please enter correct option"); // for some reason this is spinning up
             }
 
 
