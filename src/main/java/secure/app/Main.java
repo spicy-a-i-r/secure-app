@@ -40,9 +40,9 @@ public class Main {
             if (file.isDirectory()) {
                 if (file.getName().equals("storage")) { 
                     String name = input_file.getFileName().toString();
-                    String path = file.toString();
+                    String path = file.getAbsolutePath().toString();
 
-                    File f = new File(path + name);
+                    File f = new File(path + "\\" + name);
                     try {
                         if (f.createNewFile()) {
                             output = f.getAbsolutePath();
@@ -54,11 +54,7 @@ public class Main {
         }
 
 
-        Path out = Paths.get(output);
-
-        ///////////////////////////////////////////////////////////////////////
-
-        // encrypt the file and delete the old one
+        Path out = Paths.get(output); System.out.println(out);
 
 
 
@@ -66,6 +62,8 @@ public class Main {
         FileCrypto.encrypt(input_file,out, pass);
         File f = new File(input);
         f.delete();
+
+        return;
     }
 
     public static void decrypt(char[] pass) throws Exception{
@@ -97,11 +95,6 @@ public class Main {
     }
 
     public static void main(String[] args) throws Exception{
-        Path currentDir = Path.of("").toAbsolutePath(); 
-        File[] files = currentDir.toFile().listFiles();
-
-        System.out.println(files);
-
 
         System.out.println("Create user? y/n");
         String choice = s.nextLine(); 
@@ -121,12 +114,14 @@ public class Main {
 
         if (usr.checkPass(pass_attempt)) {
             char[] pass = pass_attempt.toCharArray();
-            System.out.println("logged in.\n would you like to 1. encrypt\n2. decrypt\n3. leave");
-            int c = s.nextInt();
-            s.nextLine(); // next int does not clear the next line
+            int c = 0;
             
 
-            while (c != 3) { // convert to short hand
+            while (c != 3) {
+                System.out.println("would you like to 1. encrypt\n2. decrypt\n3. leave");
+                c = s.nextInt();
+                s.nextLine(); // next int does not clear the next line 
+
                 if (c == 1) {
                     encrypt(pass);
                 } else if (c == 2) {
