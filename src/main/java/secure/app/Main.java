@@ -123,7 +123,8 @@ public class Main {
                 if (c == 1) {
                     encrypt(pass);
                 } else if (c == 2) {
-                    decrypt(pass);
+                    if (usr.checkPerms()) { decrypt(pass); }
+                    System.out.println("you do not have permissions to decrypt files");
                 } else if (c==3) {
                     System.out.println("GoodBye!");
                     s.close();

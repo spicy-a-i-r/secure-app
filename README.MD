@@ -1,7 +1,5 @@
 file handling done.
-
-User system not working.
-error handling miserable.
+basic user system done.
 
 need to save users.
 need to make another program for the front end.

@@ -40,7 +40,7 @@ public class FileCrypto {
 
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
         cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(128, iv));
-        byte[] ciphertext = cipher.doFinal(Files.readAllBytes(input)); // an error from here
+        byte[] ciphertext = cipher.doFinal(Files.readAllBytes(input));
         
         ByteBuffer out = ByteBuffer.allocate(SALT_LEN + IV_LEN + ciphertext.length);
         out.put(salt).put(iv).put(ciphertext);
