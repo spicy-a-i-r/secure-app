@@ -1,9 +1,13 @@
-since this is technically all server side, i could hard code the path? but then it wouldnt be secure on github. unless i hard code the specific file and not the absoulte path...
+file handling done.
 
-after i figure out the the file handling, then i need it to work with multiple users. I also need it to communicate with my server. (am i doing local or am i using the cloud?)
+User system not working.
+error handling miserable.
 
-then i need to design a simple front end for it
+need to save users.
+need to make another program for the front end.
+need to connect back end server to front end.
 
-then how am i going to make sure the communcation between client side and server side stays secure?
+need to secure connection.
 
-finally how can i encrypt other things besides text files
+need to encrypt all files.
+

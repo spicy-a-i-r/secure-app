@@ -96,18 +96,16 @@ public class Main {
 
     public static void main(String[] args) throws Exception{
 
-        System.out.println("Create user? y/n");
+        System.out.println("Create user? yes/no");
         String choice = s.nextLine(); 
 
 
-        if (choice == "n") { // this straight up doesnt work
+        if (!choice.equals("yes")) { 
             System.out.println("Good bye!");
             return;
         } 
 
         User usr = User.createUser(s);
-
-        // ask to enter password
 
         System.out.println("please enter your password");
         String pass_attempt = s.nextLine();
@@ -118,7 +116,7 @@ public class Main {
             
 
             while (c != 3) {
-                System.out.println("would you like to 1. encrypt\n2. decrypt\n3. leave");
+                System.out.println("would you like to..\n 1. encrypt\n2. decrypt\n3. leave");
                 c = s.nextInt();
                 s.nextLine(); // next int does not clear the next line 
 
@@ -131,7 +129,7 @@ public class Main {
                     s.close();
                     return;
                 }
-                System.out.println("please enter correct option"); // for some reason this is spinning up
+                System.out.println("please enter correct option");
             }
 
 
