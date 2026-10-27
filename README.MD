@@ -2,6 +2,8 @@ file handling done.
 basic user system done.
 
 need to save users.
+(setup for the server)
+
 need to make another program for the front end.
 need to connect back end server to front end.
 

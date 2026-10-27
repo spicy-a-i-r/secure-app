@@ -14,7 +14,7 @@ public class Main {
     public static Scanner s = new Scanner(System.in);
 
 
-    public static void encrypt(char[] pass) throws Exception{
+    public static void encrypt(String p, char[] pass) throws Exception{
         // simple usr interface
 
 
@@ -23,54 +23,44 @@ public class Main {
         String input = s.nextLine();
         Path input_file = Paths.get(input);
     
-        String output = "placeholder";
-
-        /////////////////////////////////////////////////////////////////
+        Path output = null;
         
-        // find the secure folder
-        Path currentDir = Path.of("").toAbsolutePath(); 
-        File[] files = currentDir.toFile().listFiles();
+        try {
+            File f;
+            String name = input_file.getFileName().toString();
+            File processed = new File(p);
+            File[] files = processed.listFiles();
 
-        if (files == null) { // althought i am getting files
-            System.out.println("no files here");
-            return;
-        } 
-
-        for (File file : files) {
-            if (file.isDirectory()) {
-                if (file.getName().equals("storage")) { 
-                    String name = input_file.getFileName().toString();
-                    String path = file.getAbsolutePath().toString();
-
-                    File f = new File(path + "\\" + name);
-                    try {
-                        if (f.createNewFile()) {
-                            output = f.getAbsolutePath();
-                        } else{ System.out.println("file already exists."); return; }
-                    } catch (IOException e) { e.printStackTrace(); }
+            for (File content : files) {
+                if (content.getName().equals(name)) {
+                    System.out.println("files already exists"); return;
                 }
             }
             
-        }
+            f = new File(processed + "\\" + name);
+            if (f.createNewFile()) {
+                output = Paths.get(f.getAbsolutePath());
+            } else { System.out.println("error creating the file"); return; } 
+        } catch (IOException e) { e.printStackTrace(); }
 
 
-        Path out = Paths.get(output); System.out.println(out);
 
 
 
 
-        FileCrypto.encrypt(input_file,out, pass);
+        FileCrypto.encrypt(input_file,output, pass);
         File f = new File(input);
         f.delete();
 
         return;
     }
 
-    public static void decrypt(char[] pass) throws Exception{
+    public static void decrypt(String path, char[] pass) throws Exception{
         // usr interface
 
         System.out.println("What is the name of the file? ");
-        Path input = Paths.get(s.nextLine());
+        String fileName = "\\" + s.nextLine();
+        Path input = Paths.get(path + fileName);
 
         try {
             File f = new File(input.toFile().getName());
@@ -111,6 +101,7 @@ public class Main {
         String pass_attempt = s.nextLine();
 
         if (usr.checkPass(pass_attempt)) {
+            String path = Setup.getFileFolder();
             char[] pass = pass_attempt.toCharArray();
             int c = 0;
             
@@ -121,9 +112,9 @@ public class Main {
                 s.nextLine(); // next int does not clear the next line 
 
                 if (c == 1) {
-                    encrypt(pass);
+                    encrypt(path,pass);
                 } else if (c == 2) {
-                    if (usr.checkPerms()) { decrypt(pass); }
+                    if (usr.checkPerms()) { decrypt(path, pass); }
                     System.out.println("you do not have permissions to decrypt files");
                 } else if (c==3) {
                     System.out.println("GoodBye!");
