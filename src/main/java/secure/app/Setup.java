@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.io.File;
 import java.io.IOException;
-
+import javax.swing.filechooser.*;
 
 
 public class Setup {
@@ -18,31 +18,31 @@ public class Setup {
         Boolean folder = false;
         
         while (!folder) {
-            String startingDir = System.getProperty("user.home");
+            File startingDir = new File(System.getProperty("user.home"));
             File[] files;
             System.out.println(startingDir);
 
-            File start = new File(startingDir);
-            files = start.listFiles();
+            
+            files = startingDir.listFiles();
             System.out.println(files);
 
             for (File f : files) {
                 if (f.isDirectory()) {
-                    if (f.getName().equals("processed")) {
+                    if (f.getName().equals("files_processed")) {
                         folder = true;
+			System.out.println(f.getAbsolutePath());
                         return f.getAbsolutePath();
                     }
                 } 
             }
             
 
-            File processed = new File(startingDir + "\\processed");
+            File processed = new File(startingDir + "/files_processed");
 
-            if (processed.mkdir()){
-                System.out.println("successfully made processed directory");
-                folder = true;
-                return processed.getAbsolutePath();
-            } else { System.out.println("Error creating folder"); }
+	    try {
+		Files.createDirectory(processed.toPath());
+		System.out.println("worked, directory created");
+	}  catch (IOException e) { e.printStackTrace(); }	
 
             
         }

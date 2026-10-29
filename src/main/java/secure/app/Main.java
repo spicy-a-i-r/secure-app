@@ -30,14 +30,16 @@ public class Main {
             String name = input_file.getFileName().toString();
             File processed = new File(p);
             File[] files = processed.listFiles();
+	    System.out.println(name + " " + files.length);
 
             for (File content : files) {
-                if (content.getName().equals(name)) {
+                if (content.getName().equals(name) && files.length > 0) { // says file exists already
                     System.out.println("files already exists"); return;
                 }
             }
             
-            f = new File(processed + "\\" + name);
+            f = new File(p + "/" + name);
+	    System.out.println(p+"/"+name);
             if (f.createNewFile()) {
                 output = Paths.get(f.getAbsolutePath());
             } else { System.out.println("error creating the file"); return; } 
@@ -59,7 +61,7 @@ public class Main {
         // usr interface
 
         System.out.println("What is the name of the file? ");
-        String fileName = "\\" + s.nextLine();
+        String fileName = "/" + s.nextLine();
         Path input = Paths.get(path + fileName);
 
         try {
@@ -114,14 +116,19 @@ public class Main {
                 if (c == 1) {
                     encrypt(path,pass);
                 } else if (c == 2) {
-                    if (usr.checkPerms()) { decrypt(path, pass); }
-                    System.out.println("you do not have permissions to decrypt files");
+
+                    if (usr.checkPerms()) { 
+			decrypt(path, pass);
+		    } else if (!usr.checkPerms()) {
+			System.out.println("incorrect Permissions");
+		    }
+
                 } else if (c==3) {
                     System.out.println("GoodBye!");
                     s.close();
                     return;
-                }
-                System.out.println("please enter correct option");
+                } else if (c == 0 || c > 3) { System.out.println("Enter correct option"); }
+                
             }
 
 
